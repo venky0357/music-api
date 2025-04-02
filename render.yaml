@@ -6,9 +6,11 @@ services:
 
     # Install dependencies
     buildCommand: |
-      sudo apt-get update && sudo apt-get install -y ffmpeg  # Install ffmpeg manually
+      sudo apt-get update && sudo apt-get install -y ffmpeg
       pip install --upgrade pip setuptools wheel
+      pip install --no-cache-dir --upgrade pytube  # Ensure latest Pytube version
       pip install -r requirements.txt
+      python -c "import pytube; pytube.__main__.YouTube._extract_signature_function = lambda *args, **kwargs: None"  # Patch Pytube if needed
 
     # Start command using gunicorn
     startCommand: gunicorn app:app -b 0.0.0.0:$PORT
