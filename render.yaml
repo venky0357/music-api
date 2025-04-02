@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: youtube-audio-api
+    runtime: python
+    region: oregon  # Change this to your preferred region (optional)
+
+    # Install dependencies
+    buildCommand: |
+      sudo apt-get update && sudo apt-get install -y ffmpeg  # Install ffmpeg manually
+      pip install --upgrade pip setuptools wheel
+      pip install -r requirements.txt
+
+    # Start command using gunicorn
+    startCommand: gunicorn app:app -b 0.0.0.0:$PORT
